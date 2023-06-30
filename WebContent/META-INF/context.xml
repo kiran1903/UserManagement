@@ -1,0 +1,8 @@
+<Context>
+  <Resource name="jdbc/project" 
+  			auth="Container" type="javax.sql.DataSource"	
+              maxActive="25" maxIdle="5" maxWait="10000"     
+               username="kiran" password="kiran"     
+               driverClassName="com.mysql.cj.jdbc.Driver"    
+               url="jdbc:mysql://127.0.0.1:3306/webapp_db?allowPublicKeyRetrieval=true&amp;useSSL=false"/>
+</Context>
