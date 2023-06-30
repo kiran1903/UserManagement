@@ -2,6 +2,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="org.studyeasy.entity.User"%>
 
+//to be updated with jstl
 <div class="container mtb">
 	<div class="row">
 		<div class="col-lg-6">
