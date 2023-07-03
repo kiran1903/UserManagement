@@ -1,7 +1,9 @@
 package org.studyeasy.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -12,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.studyeasy.entity.User;
 import org.studyeasy.model.UsersModel;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 @WebServlet("/operation")
 public class OperationController extends HttpServlet {
@@ -63,24 +70,51 @@ public class OperationController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String operation = request.getParameter("form");
-		operation = operation.toLowerCase();
-		switch (operation) {
-		case "adduseroperation":
-			User newUser = new User(request.getParameter("username"), request.getParameter("email"));
-			addUserOperation(newUser);
-			listUsers(request, response);
-			break;
-		case "updateuseroperation":
-			User updatedUser = new User(Integer.parseInt(request.getParameter("usersId")),
-					request.getParameter("username"), request.getParameter("email"));
-			updateUserOperation(dataSource, updatedUser);
-			listUsers(request, response);
-			break;
-		default:
-			errorPage(request, response);
-			break;
+		System.out.println("inside dopost method");
+		System.out.println("inside dopost method : "+ request.getParameterNames());
+		
+		boolean isImageUploadForm = (request.getParameter("form") == null);
+		
+		if(isImageUploadForm) {
+			ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
+			try {
+				List<FileItem> images = upload.parseRequest(request);
+				for(FileItem image: images) {
+					String name = image.getName();
+					try{name = name.substring(name.lastIndexOf("\\")+1);} catch(Exception e) {}
+					System.out.println(name);
+					image.write(new File("D:\\EclipseProjects\\Section19\\S19L02 - Adding delete fucntionality\\images\\"+name));
+		            
+				}
+				
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		else {
+			String operation = request.getParameter("form");
+    		operation = operation.toLowerCase();
+    		switch (operation) {
+    		case "adduseroperation":
+    			User newUser = new User(request.getParameter("username"), request.getParameter("email"));
+    			addUserOperation(newUser);
+    			listUsers(request, response);
+    			break;
+    		case "updateuseroperation":
+    			User updatedUser = new User(Integer.parseInt(request.getParameter("usersId")),
+    					request.getParameter("username"), request.getParameter("email"));
+    			updateUserOperation(dataSource, updatedUser);
+    			listUsers(request, response);
+    			break;
+    		default:
+    			errorPage(request, response);
+    			break;
+    		}
+		}
+		
+		
 	}
 
 	private void updateUserOperation(DataSource dataSource, User updatedUser) {
@@ -117,4 +151,6 @@ public class OperationController extends HttpServlet {
 		request.getRequestDispatcher("error.jsp").forward(request, response);
 
 	}
+	
+
 }
