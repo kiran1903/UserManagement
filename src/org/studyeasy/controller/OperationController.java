@@ -86,10 +86,12 @@ public class OperationController extends HttpServlet {
 					try{name = name.substring(name.lastIndexOf("\\")+1);} catch(Exception e) {}
 					System.out.println(name);
 					new FilesDAO().addFileDetails(new Files(name));
-					image.write(new File("D:\\EclipseProjects\\Section19\\S19L02 - Adding delete fucntionality\\images\\"+name));
+					image.write(new File("D:\\EclipseProjects\\images\\"+name));
 		            
 				}
 				System.out.println("forwarding request");
+				List<Files> files = new FilesDAO().listFiles();
+				request.setAttribute("files", files);
 				request.setAttribute("title", "Image Upload");
 				request.getRequestDispatcher("imageUpload.jsp").forward(request, response);
 				System.out.println("forwarded request");
