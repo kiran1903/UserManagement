@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+
+import org.studyeasy.DAO.FilesDAO;
+import org.studyeasy.entity.Files;
 import org.studyeasy.entity.User;
 import org.studyeasy.model.UsersModel;
 
@@ -82,6 +85,7 @@ public class OperationController extends HttpServlet {
 					String name = image.getName();
 					try{name = name.substring(name.lastIndexOf("\\")+1);} catch(Exception e) {}
 					System.out.println(name);
+					new FilesDAO().addFileDetails(new Files(name));
 					image.write(new File("D:\\EclipseProjects\\Section19\\S19L02 - Adding delete fucntionality\\images\\"+name));
 		            
 				}
