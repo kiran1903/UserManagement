@@ -70,8 +70,7 @@ public class OperationController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("inside dopost method");
-		System.out.println("inside dopost method : "+ request.getParameterNames());
+		
 		
 		boolean isImageUploadForm = (request.getParameter("form") == null);
 		
@@ -86,7 +85,10 @@ public class OperationController extends HttpServlet {
 					image.write(new File("D:\\EclipseProjects\\Section19\\S19L02 - Adding delete fucntionality\\images\\"+name));
 		            
 				}
-				
+				System.out.println("forwarding request");
+				request.setAttribute("title", "Image Upload");
+				request.getRequestDispatcher("imageUpload.jsp").forward(request, response);
+				System.out.println("forwarded request");
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
